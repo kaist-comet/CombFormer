@@ -48,7 +48,7 @@ You also need:
 
 - a working Gurobi license
 - Julia 1.10.5
-- CVRPSEP.jl, installed from GitHub
+- CVRPSEP.jl, installed from GitHub(https://github.com/chkwon/CVRPSEP.jl)
 - PyCall.jl 1.96.4
 
 ## Installation
@@ -140,4 +140,4 @@ Each JSON file contains:
 - `demands`: depot demand followed by customer demands
 - `coords`: depot coordinate followed by customer coordinates
 
-The provided test sizes are `50, 100, 200, 300, 400, 500, 750, 1000`, with 10 seeds per size.
+The provided test sizes are `50, 100, 200, 300, 400, 500, 750, 1000`, with 8 seeds per size.
