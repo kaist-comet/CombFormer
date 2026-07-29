@@ -1,0 +1,36 @@
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Experiment outputs
+results/
+checkpoints*/
+lb_test/
+test_data_rci_graphs/
+test_data_sci/
+
+# Solver/model scratch outputs
+*.mps
+*.mps.gz
+*.lp
+*.bas
+*.sol
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
