@@ -16,6 +16,7 @@ This repository contains the code, test CVRP instances, and pretrained model use
 │   ├── graph_shrinking.py               # LP support graph shrinking heuristic
 │   ├── teethsep_valid.py                # deterministic teeth construction
 │   ├── cvrpsep_cuts.jl                  # Julia wrapper for CVRPSEP cuts
+│   ├── run_fixed_lp_sep_cutdump.py      # fixed-LP offline SCI separation experiment
 │   └── run_root_iterlimit_union_cutdump.py
 ├── data/
 │   ├── cvrp_instances/                  # test instances
@@ -124,6 +125,20 @@ python code/run_root_iterlimit_union_cutdump.py \
   --capacity 500 \
   --n-rolls 8 \
   --max-time 7200
+```
+
+## Running Fixed-LP Separation Evaluation
+
+The fixed-LP separation script evaluates CVRPSEP and CombFormer offline on the same RCI-only root LP trajectories. SCIs are generated and dumped for separation-strength analysis, but they are not added to the LP.
+
+```bash
+python code/run_fixed_lp_sep_cutdump.py --sizes 50 --count 1 --n-rolls 1 --max-time 10
+```
+
+By default, results are written to:
+
+```text
+results/fixed_lp_sep_cutdump/
 ```
 
 ## Data
