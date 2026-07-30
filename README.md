@@ -19,6 +19,7 @@ This repository contains the code, test CVRP instances, and pretrained model use
 │   └── run_root_iterlimit_union_cutdump.py
 ├── data/
 │   ├── cvrp_instances/                  # test instances
+│   ├── experimental_results/appendix/   # full CSV tables for appendix results
 │   └── ub_results/                      # upper-bound reference results
 ├── models/
 │   └── train_smaller_2_tan5.pt          # pretrained CombFormer model
@@ -140,4 +141,24 @@ Each JSON file contains:
 - `demands`: depot demand followed by customer demands
 - `coords`: depot coordinate followed by customer coordinates
 
-The provided test sizes are `50, 100, 200, 300, 400, 500, 750, 1000`, with 8 seeds per size.
+The provided test sizes are `50, 100, 200, 300, 400, 500, 750, 1000`, with 10 seeds per size.
+
+Complete instance-level results underlying Tables 3--6 in the paper are provided in machine-readable CSV format:
+
+```text
+data/experimental_results/appendix/root_time_limited.csv
+data/experimental_results/appendix/root_iteration_limited.csv
+```
+
+Both files contain one row per instance-method pair with the following columns:
+
+- `instance`: CVRP instance identifier
+- `size`: number of customers
+- `method`: separator configuration
+- `best_known`: best known upper bound used for gap computation
+- `root_lower_bound`: final root-node lower bound
+- `gap_percent`: root gap in percent
+- `time_seconds`: elapsed wall-clock time
+- `iterations`: number of root cutting-plane iterations
+- `cuts`: number of added cuts reported for the run
+- `combformer_cut_percent`: percentage of cuts contributed by CombFormer for union runs
