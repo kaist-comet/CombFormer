@@ -129,7 +129,7 @@ python code/run_root_iterlimit_union_cutdump.py \
 
 ## Running Fixed-LP Separation Evaluation
 
-The fixed-LP separation script evaluates CVRPSEP and CombFormer offline on the same RCI-only root LP trajectories. SCIs are generated and dumped for separation-strength analysis, but they are not added to the LP.
+The fixed-LP separation script evaluates CVRPSEP and CombFormer offline on the same RCI-only root LP trajectories. At each iteration, RCIs are added and the LP is reoptimized first; then both SCI separators are evaluated on the resulting fractional support graph. SCIs are generated and dumped for separation-strength analysis, but they are not added to the LP.
 
 ```bash
 python code/run_fixed_lp_sep_cutdump.py --sizes 50 --count 1 --n-rolls 1 --max-time 10

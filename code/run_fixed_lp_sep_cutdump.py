@@ -152,13 +152,41 @@ def run_instance(args, jl, net, n, seed, dump_path):
                 edge_head.append(head + 1)
                 edge_values_list.append(edge_values[e])
 
+            rci_cuts, rci_max_violation = add_rcis(
+                model, edge_values_list, x, edge_head, edge_tail, jl
+            )
+            cuts += rci_cuts
+            model.optimize()
+            if model.status != gp.GRB.OPTIMAL:
+                break
+            new_bound = model.objVal
+            if new_bound <= prev + 1e-4:
+                no_imp += 1
+                if no_imp >= 10:
+                    break
+            else:
+                no_imp = 0
+            total_iter += 1
+            prev = new_bound
+
+            edge_values = {e: x[e].x for e in graph.edges}
+            tour_edges = [e for e in graph.edges if edge_values[e] > 0]
+            edge_head = []
+            edge_tail = []
+            edge_values_list = []
+            for e in tour_edges:
+                head, tail = e
+                edge_tail.append(tail + 1)
+                edge_head.append(head + 1)
+                edge_values_list.append(edge_values[e])
+
             records = raw_sci_records(
                 model,
                 net,
                 jl,
                 n,
                 seed,
-                total_iter,
+                total_iter - 1,
                 edge_values,
                 edge_values_list,
                 edge_tail,
@@ -189,31 +217,17 @@ def run_instance(args, jl, net, n, seed, dump_path):
                     "instance": f"cvrp_n{n}_s{seed}",
                     "n": n,
                     "seed": seed,
-                    "iteration": total_iter,
+                    "iteration": total_iter - 1,
                     "lp_bound": model.objVal,
                     "support_edges": len(tour_edges),
+                    "rci_cuts": rci_cuts,
+                    "rci_max_violation": rci_max_violation,
                     "raw_cvrpsep_sci": len(by_source["cvrpsep"]),
                     "raw_combformer_sci": len(by_source["combformer"]),
                 },
             )
             graph_count += 1
 
-            rci_cuts, rci_max_violation = add_rcis(
-                model, edge_values_list, x, edge_head, edge_tail, jl
-            )
-            cuts += rci_cuts
-            model.optimize()
-            if model.status != gp.GRB.OPTIMAL:
-                break
-            new_bound = model.objVal
-            if new_bound <= prev + 1e-4:
-                no_imp += 1
-                if no_imp >= 10:
-                    break
-            else:
-                no_imp = 0
-            total_iter += 1
-            prev = new_bound
             if args.max_time > 0 and time.time() - root_start > args.max_time:
                 break
             if max_iter > 0 and total_iter >= max_iter:
